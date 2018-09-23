@@ -1,0 +1,30 @@
+{
+  "name": "Magic-Mirror-Module-HuePIR",
+  "version": "1.0.0",
+  "description": "Philips Hue PIR motion sensor module for the Magic Mirror.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robinvan0418/MMM-HuePIR"
+  },
+  "keywords": [
+    "magic mirror",
+	"magic mirror module",
+    "smart mirror",
+    "magic mirror Hue PIR",
+    "Hue motion sensor",
+    "smart mirror hue"
+  ],
+  "author": "Robin Van",
+  "contributors": "https://github.com/robinvan0418/MMM-HuePIR/graphs/contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robinvan0418/MMM-HuePIR/issues"
+  },
+  "homepage": "https://github.com/robinvan0418/MMM-HuePIR#readme",
+  "scripts": {
+    "postinstall": "node_modules/.bin/electron-rebuild -e ../../node_modules/electron"
+  },
+  "dependencies": {
+    "electron-rebuild": "^1.2.1"
+  }
+}
