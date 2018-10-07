@@ -7,13 +7,13 @@ var Fetcher = function(url, reloadInterval) {
 		reloadInterval = 800;
 	}
 	var reloadTimer = null;
+	var reloadTimers = [];
 	var fetchFailedCallback = function() {};
 	var itemsReceivedCallback = function() {};
 	
 	/** private methods **/
 	var fetchNews = function() {
-		clearTimeout(reloadTimer);
-		reloadTimer = null;
+		clearAllTimeouts();
 		http.get(url, (res) => {
             let rawData = '';
             res.on('data', (chunk) => {rawData += chunk;});
@@ -60,11 +60,20 @@ var Fetcher = function(url, reloadInterval) {
 	var scheduleTimer = function() {
 		//console.log('Schedule update timer.');
 		console.log('Schedule timer with interval ms: ' +reloadInterval);
-		clearTimeout(reloadTimer);
+		//clearTimeout(reloadTimer);
+		clearAllTimeouts();
 		reloadTimer = setTimeout(function() {
 			fetchNews();
 		}, reloadInterval);
+		reloadTimers.push(reloadTimer);
 	};
+	
+	var clearAllTimeouts = function() {
+		for (timer in reloadTimers) {
+			clearTimeout(timer);
+		}
+		reloadTimers = [];
+	}
 
 	/* public methods */
 
