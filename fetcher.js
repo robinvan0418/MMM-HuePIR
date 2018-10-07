@@ -25,14 +25,15 @@ var Fetcher = function(url, reloadInterval) {
 						// Check if hdmi output is already on
 						exec("/usr/bin/vcgencmd display_power").stdout.on('data', function(data) {
 							if (data.indexOf("display_power=0") === 0){
+								console.log('activating monitor');
 								exec("/usr/bin/vcgencmd display_power 1", null);
-								console.log('display powered');
 								self.setReloadInterval(2*60*1000);
 							}
 						})
 					}
                     else {
                         //deactivateMonitor
+						console.log('deactivating monitor');
                         exec("/usr/bin/vcgencmd display_power 0", null);
 						self.setReloadInterval(800);
                     }
@@ -69,6 +70,7 @@ var Fetcher = function(url, reloadInterval) {
 	 */
 	this.setReloadInterval = function(interval) {
 		if (interval > 800) {
+			console.log('adjusting timeout to ms: ' + interval);
 			reloadInterval = interval;
 		}
 	};
