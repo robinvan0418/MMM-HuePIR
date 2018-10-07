@@ -10,16 +10,21 @@
 const NodeHelper = require('node_helper');
 const exec = require('child_process').exec;
 const http = require('http');
+var Fetcher = require("./fetcher.js");
 
 module.exports = NodeHelper.create({
     start: function () {
+		console.log("Starting module: " + this.name);
         this.started = false;
     },
     // Subclass socketNotificationReceived received.
     socketNotificationReceived: function (notification, payload) {
         if (notification === 'INIT' && this.started == false) {
-            const self = this;
-            this.config = payload;
+            //const self = this;
+			const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
+			this.createFetcher(url);
+            /*
+			this.config = payload;
 			var interval = 3000;
 			var watchPIR = function() {
 				const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
@@ -61,6 +66,7 @@ module.exports = NodeHelper.create({
 			}
 			setTimeout(watchPIR(),interval);
             // Detect movement
+			*/
             /*setInterval(function (err, value) {
 				const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
 				http.get(url, (res) => {
@@ -97,6 +103,35 @@ module.exports = NodeHelper.create({
             this.started = true;
 
         }
-    }
+    },
+	createFetcher: function(hue_url) {
+		var self = this;
+
+		var url = hue_url || "";
+		const reloadInterval = 800;
+
+		if (!validUrl.isUri(url)) {
+			self.sendSocketNotification("INCORRECT_URL", url);
+			return;
+		}
+
+		var fetcher;
+		
+		console.log("Create new fetcher for url: " + url + " - Interval: " + reloadInterval);
+		fetcher = new Fetcher(url, reloadInterval);
+		/*
+		fetcher.onReceive(function(fetcher) {
+			self.broadcastFeeds();
+		});
+		*/
+		fetcher.onError(function(fetcher, error) {
+			self.sendSocketNotification("FETCH_ERROR", {
+				url: fetcher.url(),
+				error: error
+			});
+		});
+
+		fetcher.startFetch();
+	},
 
 });
