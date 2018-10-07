@@ -12,9 +12,6 @@ var Fetcher = function(url, reloadInterval) {
 	
 	/** private methods **/
 	var fetchNews = function() {
-		console.log(reloadTimer);
-		clearTimeout(reloadTimer);
-		reloadTimer = null;
 		http.get(url, (res) => {
             let rawData = '';
             res.on('data', (chunk) => {rawData += chunk;});
@@ -30,9 +27,9 @@ var Fetcher = function(url, reloadInterval) {
 							if (data.indexOf("display_power=0") === 0){
 								console.log('activating monitor');
 								exec("/usr/bin/vcgencmd display_power 1", null);
+								self.setReloadInterval(2*60*1000);
 							}
 						})
-						self.setReloadInterval(2*60*1000);
 					}
                     else {
                         //deactivateMonitor
@@ -40,9 +37,9 @@ var Fetcher = function(url, reloadInterval) {
 							if (data.indexOf("display_power=1") === 0){
 								console.log('deactivating monitor');
 								exec("/usr/bin/vcgencmd display_power 0", null);
+								self.setReloadInterval(800);
 							}
 						})
-						self.setReloadInterval(800);
                     }
                 } catch (e) {
                     console.error(e.message);
@@ -53,7 +50,6 @@ var Fetcher = function(url, reloadInterval) {
 			fetchFailedCallback(self, e);
 			self.setReloadInterval(800);
         });
-		scheduleTimer();
 	}
 
 	/* scheduleTimer()
@@ -67,6 +63,7 @@ var Fetcher = function(url, reloadInterval) {
 		reloadTimer = setTimeout(function() {
 			fetchNews();
 		}, reloadInterval);
+		console.log(reloadTimer);
 	};
 
 	/* public methods */
@@ -78,6 +75,8 @@ var Fetcher = function(url, reloadInterval) {
 	 */
 	this.setReloadInterval = function(interval) {
 		if (interval != reloadInterval) {
+			clearTimeout(reloadTimer);
+			reloadTimer = null;
 			if (interval >= 800) {
 				console.log('adjusting timeout to ms: ' + interval);
 				reloadInterval = interval;
@@ -85,6 +84,7 @@ var Fetcher = function(url, reloadInterval) {
 				console.log('adjusting timeout to default ms: 800');
 				reloadInterval = 800;
 			}
+			scheduleTimer();
 		}
 	};
 
