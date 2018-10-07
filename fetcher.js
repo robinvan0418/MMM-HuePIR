@@ -33,9 +33,11 @@ var Fetcher = function(url, reloadInterval) {
 					}
                     else {
                         //deactivateMonitor
-						console.log('deactivating monitor');
-                        exec("/usr/bin/vcgencmd display_power 0", null);
-						self.setReloadInterval(800);
+						exec("/usr/bin/vcgencmd display_power=1").stdout.on('data', function(data) {
+							console.log('deactivating monitor');
+							exec("/usr/bin/vcgencmd display_power 0", null);
+							self.setReloadInterval(800);
+						})
                     }
                 } catch (e) {
                     console.error(e.message);
