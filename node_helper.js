@@ -20,7 +20,7 @@ module.exports = NodeHelper.create({
         if (notification === 'INIT' && this.started == false) {
             const self = this;
             this.config = payload;
-			var interval = 800;
+			var interval = 3000;
 			var watchPIR = function() {
 				const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
 				http.get(url, (res) => {
