@@ -69,7 +69,7 @@ module.exports = NodeHelper.create({
                 }).on('error', (e) => {
                     console.error(`Got error: ${e.message}`);
                 });
-				console.log('setting timeout with interval: ' + str(interval));
+				console.log('setting timeout with interval: ' + interval);
 				setTimeout(watchPIR(),interval);
 			}
 			setTimeout(watchPIR(),interval);
