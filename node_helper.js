@@ -34,7 +34,7 @@ module.exports = NodeHelper.create({
             const self = this;
             this.config = payload;
 			var interval = 800;
-			var watchPIR = function(err, value) {
+			var watchPIR = function() {
 				const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
 				http.get(url, (res) => {
                     let rawData = '';
@@ -70,9 +70,9 @@ module.exports = NodeHelper.create({
                     console.error(`Got error: ${e.message}`);
                 });
 				console.log('setting timeout with interval: ' + str(interval));
-				setTimeout(watchPIR(err,value),interval);
+				setTimeout(watchPIR(),interval);
 			}
-			setTimeout(watchPIR(err,value),interval);
+			setTimeout(watchPIR(),interval);
             // Detect movement
             /*setInterval(function (err, value) {
 				const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
