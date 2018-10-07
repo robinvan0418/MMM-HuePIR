@@ -72,7 +72,7 @@ module.exports = NodeHelper.create({
 				console.log('setting timeout with interval: ' + interval);
 				setTimeout(watchPIR(),interval);
 			}
-			setTimeout(watchPIR(),interval);
+			//setTimeout(watchPIR(),interval);
             // Detect movement
             /*setInterval(function (err, value) {
 				const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
