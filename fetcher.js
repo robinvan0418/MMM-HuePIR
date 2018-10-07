@@ -12,6 +12,7 @@ var Fetcher = function(url, reloadInterval) {
 	
 	/** private methods **/
 	var fetchNews = function() {
+		console.log(reloadTimer);
 		clearTimeout(reloadTimer);
 		reloadTimer = null;
 		http.get(url, (res) => {
@@ -76,12 +77,14 @@ var Fetcher = function(url, reloadInterval) {
 	 * attribute interval number - Interval for the update in milliseconds.
 	 */
 	this.setReloadInterval = function(interval) {
-		if (interval >= 800) {
-			console.log('adjusting timeout to ms: ' + interval);
-			reloadInterval = interval;
-		} else {
-			console.log('adjusting timeout to default ms: 800');
-			reloadInterval = 800;
+		if (interval != reloadInterval) {
+			if (interval >= 800) {
+				console.log('adjusting timeout to ms: ' + interval);
+				reloadInterval = interval;
+			} else {
+				console.log('adjusting timeout to default ms: 800');
+				reloadInterval = 800;
+			}
 		}
 	};
 
