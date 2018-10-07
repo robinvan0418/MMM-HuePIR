@@ -30,8 +30,8 @@ var Fetcher = function(url, reloadInterval) {
 								console.log('activating monitor');
 								exec("/usr/bin/vcgencmd display_power 1", null);
 								self.setReloadInterval(1*60*1000);
-								scheduleTimer();
 							}
+							scheduleTimer();
 						})
 					}
                     else {
@@ -41,8 +41,8 @@ var Fetcher = function(url, reloadInterval) {
 								console.log('deactivating monitor');
 								exec("/usr/bin/vcgencmd display_power 0", null);
 								self.setReloadInterval(800);
-								scheduleTimer();
 							}
+							scheduleTimer();
 						})
                     }
                 } catch (e) {
