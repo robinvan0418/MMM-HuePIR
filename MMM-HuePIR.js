@@ -16,7 +16,7 @@ Module.register('MMM-HuePIR',{
 	},
 
 	start: function () {
-		this.sendSocketNotification('INITIALIZE', this.config);
+		this.sendSocketNotification('INIT', this.config);
 		Log.info('Starting module: ' + this.name);
 	}
 });

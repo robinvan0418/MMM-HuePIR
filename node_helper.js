@@ -30,14 +30,13 @@ module.exports = NodeHelper.create({
 
     // Subclass socketNotificationReceived received.
     socketNotificationReceived: function (notification, payload) {
-        if (notification === 'CONFIG' && this.started == false) {
+        if (notification === 'INIT' && this.started == false) {
             const self = this;
             this.config = payload;
-
             // Detect movement
             setInterval(function (err, value) {
-				const url = 'http://' + this.config.HUE_BRIDGE_IP + '/api/' + this.config.HUE_USER_ID + '/sensors/' + this.config.HUE_SENSOR_ID;
-                http.get(url, (res) => {
+				const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
+		http.get(url, (res) => {
                     let rawData = '';
                     res.on('data', (chunk) => {rawData += chunk;});
                     res.on('end', () => {
@@ -46,13 +45,20 @@ module.exports = NodeHelper.create({
                             var status = parsedData.state.presence;
                             console.log(status);
                             if (status) {
-								activateMonitor();
+								//activateMonitor();
                                 //exec("/usr/bin/vcgencmd display_power 1", null);
-                            	console.log('display should be powered');
+				exec("/usr/bin/vcgencmd display_power").stdout.on('data', function(data) {
+            				if (data.indexOf("display_power=0") === 0){
+                				exec("/usr/bin/vcgencmd display_power 1", null);
+        					console.log('display powered');
+					}
+				})
+
+                            	//console.log('display should be powered');
 							}
                             else {
-                                deactivateMonitor()
-                                //exec("/usr/bin/vcgencmd display_power 0", null);
+                                //deactivateMonitor()
+                                exec("/usr/bin/vcgencmd display_power 0", null);
                             }
                         } catch (e) {
                             console.error(e.message);
