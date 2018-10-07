@@ -29,7 +29,7 @@ var Fetcher = function(url, reloadInterval) {
 							if (data.indexOf("display_power=0") === 0){
 								console.log('activating monitor');
 								exec("/usr/bin/vcgencmd display_power 1", null);
-								self.setReloadInterval(2*60*1000);
+								self.setReloadInterval(1*60*1000);
 							}
 						})
 					}
@@ -43,7 +43,6 @@ var Fetcher = function(url, reloadInterval) {
 							}
 						})
                     }
-					scheduleTimer();
                 } catch (e) {
                     console.error(e.message);
                 }
@@ -51,6 +50,7 @@ var Fetcher = function(url, reloadInterval) {
         }).on('error', (e) => {
 			fetchFailedCallback(self, e);
         });
+		scheduleTimer();
 	}
 
 	/* scheduleTimer()
@@ -64,7 +64,6 @@ var Fetcher = function(url, reloadInterval) {
 		reloadTimer = setTimeout(function() {
 			fetchNews();
 		}, reloadInterval);
-		console.log(reloadTimer);
 	};
 
 	/* public methods */
