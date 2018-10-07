@@ -61,6 +61,7 @@ var Fetcher = function(url, reloadInterval) {
 
 	var scheduleTimer = function() {
 		//console.log('Schedule update timer.');
+		console.log('Schedule timer with interval ms: ' +reloadInterval);
 		clearTimeout(reloadTimer);
 		reloadTimer = setTimeout(function() {
 			fetchNews();
