@@ -12,6 +12,8 @@ var Fetcher = function(url, reloadInterval) {
 	
 	/** private methods **/
 	var fetchNews = function() {
+		clearTimeout(reloadTimer);
+		reloadTimer = null;
 		http.get(url, (res) => {
             let rawData = '';
             res.on('data', (chunk) => {rawData += chunk;});
@@ -41,14 +43,13 @@ var Fetcher = function(url, reloadInterval) {
 							}
 						})
                     }
+					scheduleTimer();
                 } catch (e) {
                     console.error(e.message);
-					self.setReloadInterval(800);
                 }
             });
         }).on('error', (e) => {
 			fetchFailedCallback(self, e);
-			self.setReloadInterval(800);
         });
 	}
 
@@ -75,8 +76,6 @@ var Fetcher = function(url, reloadInterval) {
 	 */
 	this.setReloadInterval = function(interval) {
 		if (interval != reloadInterval) {
-			clearTimeout(reloadTimer);
-			reloadTimer = null;
 			if (interval >= 800) {
 				console.log('adjusting timeout to ms: ' + interval);
 				reloadInterval = interval;
@@ -84,7 +83,6 @@ var Fetcher = function(url, reloadInterval) {
 				console.log('adjusting timeout to default ms: 800');
 				reloadInterval = 800;
 			}
-			scheduleTimer();
 		}
 	};
 
