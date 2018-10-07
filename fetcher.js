@@ -73,9 +73,12 @@ var Fetcher = function(url, reloadInterval) {
 	 * attribute interval number - Interval for the update in milliseconds.
 	 */
 	this.setReloadInterval = function(interval) {
-		if (interval > 800) {
+		if (interval >= 800) {
 			console.log('adjusting timeout to ms: ' + interval);
 			reloadInterval = interval;
+		} else {
+			console.log('adjusting timeout to default ms: 800');
+			reloadInterval = 800;
 		}
 	};
 
