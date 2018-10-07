@@ -70,8 +70,8 @@ var Fetcher = function(url, reloadInterval) {
 	
 	var clearAllTimeouts = function() {
 		for (timer in reloadTimers) {
-			console.log(timer);
-			clearTimeout(timer);
+			console.log(reloadTimers[timer]);
+			clearTimeout(reloadTimers[timer]);
 		}
 		reloadTimers = [];
 	}
