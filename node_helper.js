@@ -15,19 +15,6 @@ module.exports = NodeHelper.create({
     start: function () {
         this.started = false;
     },
-
-    activateMonitor: function () {
-        // Check if hdmi output is already on
-        exec("/usr/bin/vcgencmd display_power").stdout.on('data', function(data) {
-            if (data.indexOf("display_power=0") === 0)
-                exec("/usr/bin/vcgencmd display_power 1", null);
-        })
-    },
-
-    deactivateMonitor: function () {
-        exec("/usr/bin/vcgencmd display_power 0", null);
-    },
-
     // Subclass socketNotificationReceived received.
     socketNotificationReceived: function (notification, payload) {
         if (notification === 'INIT' && this.started == false) {
@@ -72,7 +59,7 @@ module.exports = NodeHelper.create({
 				console.log('setting timeout with interval: ' + interval);
 				setTimeout(watchPIR(),interval);
 			}
-			//setTimeout(watchPIR(),interval);
+			setTimeout(watchPIR(),interval);
             // Detect movement
             /*setInterval(function (err, value) {
 				const url = 'http://' + payload["HUE_BRIDGE_IP"] + '/api/' + payload["HUE_USER_ID"] + '/sensors/' + payload["HUE_SENSOR_ID"];
