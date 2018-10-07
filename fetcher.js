@@ -1,4 +1,5 @@
 const http = require('http');
+const exec = require('child_process').exec;
 
 var Fetcher = function(url, reloadInterval) {
 	var self = this;
@@ -26,18 +27,18 @@ var Fetcher = function(url, reloadInterval) {
 							if (data.indexOf("display_power=0") === 0){
 								exec("/usr/bin/vcgencmd display_power 1", null);
 								console.log('display powered');
-								this.setReloadInterval(2*60*1000);
+								setReloadInterval(2*60*1000);
 							}
 						})
 					}
                     else {
                         //deactivateMonitor
                         exec("/usr/bin/vcgencmd display_power 0", null);
-						this.setReloadInterval(800);
+						setReloadInterval(800);
                     }
                 } catch (e) {
                     console.error(e.message);
-					this.setReloadInterval(800);
+					setReloadInterval(800);
                 }
 				scheduleTimer();
             });
