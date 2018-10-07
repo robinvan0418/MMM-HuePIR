@@ -11,6 +11,7 @@ const NodeHelper = require('node_helper');
 const exec = require('child_process').exec;
 const http = require('http');
 var Fetcher = require("./fetcher.js");
+var validUrl = require("valid-url");
 
 module.exports = NodeHelper.create({
     start: function () {
