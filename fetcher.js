@@ -21,7 +21,7 @@ var Fetcher = function(url, reloadInterval) {
                 try {
 					const parsedData = JSON.parse(rawData);
                     var status = parsedData.state.presence;
-                    console.log(status);
+                    //console.log(status);
                     if (status) {
 						//activateMonitor
 						// Check if hdmi output is already on
@@ -60,7 +60,7 @@ var Fetcher = function(url, reloadInterval) {
 
 	var scheduleTimer = function() {
 		//console.log('Schedule update timer.');
-		console.log('Schedule timer with interval ms: ' +reloadInterval);
+		//console.log('Schedule timer with interval ms: ' +reloadInterval);
 		//clearTimeout(reloadTimer);
 		clearAllTimeouts();
 		reloadTimer = setTimeout(function() {
@@ -71,7 +71,6 @@ var Fetcher = function(url, reloadInterval) {
 	
 	var clearAllTimeouts = function() {
 		for (timer in reloadTimers) {
-			console.log(reloadTimers[timer]);
 			clearTimeout(reloadTimers[timer]);
 		}
 		reloadTimers = [];
