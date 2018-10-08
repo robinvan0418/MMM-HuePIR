@@ -3,8 +3,8 @@ const exec = require('child_process').exec;
 
 var Fetcher = function(url, reloadInterval) {
 	var self = this;
-	if (reloadInterval < 800) {
-		reloadInterval = 800;
+	if (reloadInterval < 1000) {
+		reloadInterval = 1000;
 	}
 	var reloadTimer = null;
 	var reloadTimers = [];
@@ -40,7 +40,7 @@ var Fetcher = function(url, reloadInterval) {
 							if (data.indexOf("display_power=1") === 0){
 								console.log('deactivating monitor');
 								exec("/usr/bin/vcgencmd display_power 0", null);
-								self.setReloadInterval(800);
+								self.setReloadInterval(1000);
 							}
 							scheduleTimer();
 						})
@@ -68,7 +68,7 @@ var Fetcher = function(url, reloadInterval) {
 		}, reloadInterval);
 		reloadTimers.push(reloadTimer);
 	};
-	
+
 	var clearAllTimeouts = function() {
 		for (timer in reloadTimers) {
 			clearTimeout(reloadTimers[timer]);
@@ -85,12 +85,12 @@ var Fetcher = function(url, reloadInterval) {
 	 */
 	this.setReloadInterval = function(interval) {
 		if (interval != reloadInterval) {
-			if (interval >= 800) {
+			if (interval >= 1000) {
 				console.log('adjusting timeout to ms: ' + interval);
 				reloadInterval = interval;
 			} else {
-				console.log('adjusting timeout to default ms: 800');
-				reloadInterval = 800;
+				console.log('adjusting timeout to default ms: 1000');
+				reloadInterval = 1000;
 			}
 		}
 	};
